@@ -12,31 +12,35 @@ class CardMovie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 120,
-          height: 200,
-          margin: const EdgeInsets.only(right: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            image: DecorationImage(
-              image: NetworkImage(
-                  "https://api.themoviedb.org/3/movie/$image/images?api_key=65bc57d002bbce4b6ce3f6a210eba566"),
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
+    return Container(
+      width: 120,
+      child: Column(
+        children: [
+          Container(
+            width: 120,
+            height: 200,
+            margin: const EdgeInsets.only(right: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(
+                image:
+                    NetworkImage("https://image.tmdb.org/t/p/original/$image"),
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Text(
-          name,
-          style: description.copyWith(fontWeight: FontWeight.w600),
-          softWrap: true,
-        )
-      ],
+          const SizedBox(
+            height: 12,
+          ),
+          Text(
+            name,
+            style: description.copyWith(fontWeight: FontWeight.w600),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
+      ),
     );
   }
 }

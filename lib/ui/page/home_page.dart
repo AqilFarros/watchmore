@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: movie
-                      .map((e) => CardMovie(name: e.title!, image: e.id!.toString()))
+                      .map((e) => CardMovie(name: e.title!, image: e.image!))
                       .toList(),
                 ),
               );

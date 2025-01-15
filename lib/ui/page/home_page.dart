@@ -41,6 +41,10 @@ class _HomePageState extends State<HomePage> {
                   height: 12,
                 ),
                 popularMovie(),
+                const SizedBox(
+                  height: 12,
+                ),
+                rateMovie(),
               ],
             ),
           ],
@@ -50,39 +54,35 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget carousel() {
-  return BlocBuilder<PlayingMovieCubit, PlayingMovieState>(
-    builder: (context, state) {
-      if (state is PlayingMovieLoaded) {
-        List<PlayingMovie> movie = state.playingMovie;
-
-        return CarouselSlider.builder(
-            itemCount: 5,
-            itemBuilder:
-                (BuildContext context, int itemIndex, int pageViewIndex) =>
-                    MovieCarousel(
-                      name: movie[itemIndex].title!,
-                      overview: movie[itemIndex].overview!,
-                      image: movie[itemIndex].image!,
-                    ),
-            options: CarouselOptions(
-              aspectRatio: 16 / 9,
-              viewportFraction: 0.8,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              scrollDirection: Axis.horizontal,
-            ));
-      } else {
-        return Text('NTTTTT');
-      }
-    },
+Widget rateMovie() {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 18),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text.rich(
+          TextSpan(
+            text: 'MOST RATED',
+            style: heading1.copyWith(
+              fontWeight: FontWeight.w200,
+            ),
+            children: [
+              TextSpan(
+                text: ' MOVIES',
+                style: heading1,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        RateMovie(),
+        const SizedBox(
+          height: 24,
+        ),
+      ],
+    ),
   );
 }
 
@@ -151,6 +151,42 @@ Widget popularMovie() {
         }),
       ],
     ),
+  );
+}
+
+Widget carousel() {
+  return BlocBuilder<PlayingMovieCubit, PlayingMovieState>(
+    builder: (context, state) {
+      if (state is PlayingMovieLoaded) {
+        List<PlayingMovie> movie = state.playingMovie;
+
+        return CarouselSlider.builder(
+            itemCount: 5,
+            itemBuilder:
+                (BuildContext context, int itemIndex, int pageViewIndex) =>
+                    MovieCarousel(
+                      name: movie[itemIndex].title!,
+                      overview: movie[itemIndex].overview!,
+                      image: movie[itemIndex].image!,
+                    ),
+            options: CarouselOptions(
+              aspectRatio: 16 / 9,
+              viewportFraction: 0.8,
+              initialPage: 0,
+              enableInfiniteScroll: true,
+              reverse: false,
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enlargeCenterPage: true,
+              enlargeFactor: 0.3,
+              scrollDirection: Axis.horizontal,
+            ));
+      } else {
+        return Text('NTTTTT');
+      }
+    },
   );
 }
 

@@ -1,6 +1,6 @@
 part of 'model.dart';
 
-class PopularMovie extends Equatable {
+class PlayingMovie extends Equatable {
   final int? id;
   final String? title;
   final String? overview;
@@ -10,7 +10,7 @@ class PopularMovie extends Equatable {
   final double? rating;
   final List<String>? genre;
 
-  const PopularMovie({
+  const PlayingMovie({
     this.id,
     this.title,
     this.overview,
@@ -21,7 +21,7 @@ class PopularMovie extends Equatable {
     this.genre,
   });
 
-  factory PopularMovie.fromJson(Map<String, dynamic> data) => PopularMovie(
+  factory PlayingMovie.fromJson(Map<String, dynamic> data) => PlayingMovie(
         id: data["id"],
         title: data["title"],
         overview: data["overview"],

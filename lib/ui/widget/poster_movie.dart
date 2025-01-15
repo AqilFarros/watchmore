@@ -1,7 +1,7 @@
 part of 'widget.dart';
 
-class CardMovie extends StatelessWidget {
-  const CardMovie({
+class PosterMovie extends StatelessWidget {
+  const PosterMovie({
     super.key,
     required this.name,
     required this.image,
@@ -14,12 +14,12 @@ class CardMovie extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 120,
+      margin: const EdgeInsets.only(right: 10),
       child: Column(
         children: [
           Container(
             width: 120,
             height: 200,
-            margin: const EdgeInsets.only(right: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               image: DecorationImage(
@@ -37,8 +37,8 @@ class CardMovie extends StatelessWidget {
             name,
             style: description.copyWith(fontWeight: FontWeight.w600),
             maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          )
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

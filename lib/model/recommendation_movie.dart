@@ -1,7 +1,7 @@
 part of 'model.dart';
 
-class PlayingMovie extends Movie {
-  const PlayingMovie({
+class RecommendationMovie extends Movie {
+  const RecommendationMovie({
     super.id,
     super.title,
     super.overview,
@@ -13,7 +13,8 @@ class PlayingMovie extends Movie {
     List<int>? super.genre,
   });
 
-  factory PlayingMovie.fromJson(Map<String, dynamic> data) => PlayingMovie(
+  factory RecommendationMovie.fromJson(Map<String, dynamic> data) =>
+      RecommendationMovie(
         id: data["id"],
         title: data["title"],
         overview: data["overview"],
@@ -34,7 +35,7 @@ class PlayingMovie extends Movie {
         poster,
         release,
         rating,
-        genre,
         language,
+        genre,
       ];
 }

@@ -4,6 +4,8 @@ import 'package:watchmore/model/model.dart';
 import 'package:http/http.dart' as http;
 
 part 'movie.dart';
+part 'genre.dart';
+part 'cast.dart';
 
 String baseUrl = "https://api.themoviedb.org/3";
 String apiKey = "65bc57d002bbce4b6ce3f6a210eba566";

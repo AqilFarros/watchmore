@@ -1,28 +1,19 @@
 part of 'model.dart';
 
-class MostRatedMovie extends Equatable {
-  final int? id;
-  final String? title;
-  final String? overview;
-  final String? image;
-  final String? poster;
-  final String? release;
-  final double? rating;
-  final List<String>? genre;
-
+class MostRatedMovie extends Movie {
   const MostRatedMovie({
-    this.id,
-    this.title,
-    this.overview,
-    this.image,
-    this.poster,
-    this.release,
-    this.rating,
-    this.genre,
+    super.id,
+    super.title,
+    super.overview,
+    super.image,
+    super.poster,
+    super.release,
+    super.rating,
+    super.language,
+    List<int>? super.genre,
   });
 
-  factory MostRatedMovie.fromJson(Map<String, dynamic> data) =>
-      MostRatedMovie(
+  factory MostRatedMovie.fromJson(Map<String, dynamic> data) => MostRatedMovie(
         id: data["id"],
         title: data["title"],
         overview: data["overview"],
@@ -30,11 +21,12 @@ class MostRatedMovie extends Equatable {
         poster: data["poster_path"],
         release: data["release_date"],
         rating: data["vote_average"],
-        genre: List<String>.from(data["genre_ids"].map((x) => x.toString())),
+        language: data["original_language"],
+        genre: List<int>.from(data["genre_ids"].map((x) => x)),
       );
 
-      @override
-      List<Object?> get props => [
+  @override
+  List<Object?> get props => [
         id,
         title,
         overview,
@@ -43,5 +35,6 @@ class MostRatedMovie extends Equatable {
         release,
         rating,
         genre,
+        language,
       ];
 }

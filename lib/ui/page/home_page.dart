@@ -1,20 +1,24 @@
 part of "page.dart";
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+    required this.popularMovie,
+    required this.playingMovie,
+    required this.rateMovie,
+    required this.genre,
+  });
+
+  final List<PopularMovie> popularMovie;
+  final List<PlayingMovie> playingMovie;
+  final List<MostRatedMovie> rateMovie;
+  final List<Genre> genre;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    context.read<PopularMovieCubit>().getPopularMovie();
-    context.read<PlayingMovieCubit>().getPlayingMovie();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,19 +36,19 @@ class _HomePageState extends State<HomePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                appbar(),
+                homepageAppbar(),
                 const SizedBox(
                   height: 12,
                 ),
-                carousel(),
+                carousel(context, widget.playingMovie, widget.genre),
                 const SizedBox(
                   height: 12,
                 ),
-                popularMovie(),
+                popularMovie(context, widget.popularMovie, widget.genre),
                 const SizedBox(
                   height: 12,
                 ),
-                rateMovie(),
+                rateMovie(context, widget.rateMovie, widget.genre),
               ],
             ),
           ],
@@ -54,7 +58,14 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget rateMovie() {
+Widget rateMovie(context, List<Movie> movie, List<Genre> genre) {
+  int number = -1;
+  List listMovie = [];
+
+  for (int i = 0; i < 10; i += 2) {
+    listMovie.add(movie.sublist(i, i + 2));
+  }
+
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 18),
     child: Column(
@@ -77,7 +88,56 @@ Widget rateMovie() {
         const SizedBox(
           height: 12,
         ),
-        RateMovie(),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+              children: listMovie.map((e) {
+            number += 2;
+            return Container(
+              margin: const EdgeInsets.only(right: defaultMargin),
+              child: Column(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoadingDetailPage(
+                            movie: e[0],
+                            genre: genre,
+                          ),
+                        ),
+                      );
+                    },
+                    child: RateMovie(
+                      title: e[0].title!,
+                      number: number,
+                      image: e[0].image!,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoadingDetailPage(
+                            movie: e[1],
+                            genre: genre,
+                          ),
+                        ),
+                      );
+                    },
+                    child: RateMovie(
+                      title: e[1].title!,
+                      number: number + 1,
+                      image: e[1].image!,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList()),
+        ),
         const SizedBox(
           height: 24,
         ),
@@ -86,7 +146,7 @@ Widget rateMovie() {
   );
 }
 
-Widget popularMovie() {
+Widget popularMovie(context, List<Movie> movie, List<Genre> genre) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 18),
     child: Column(
@@ -109,88 +169,94 @@ Widget popularMovie() {
         const SizedBox(
           height: 12,
         ),
-        BlocBuilder<PopularMovieCubit, PopularMovieState>(builder: (_, state) {
-          if (state is PopularMovieLoaded) {
-            List<PopularMovie> movie = state.popularMovie;
-
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[] +
-                    movie
-                        .take(7)
-                        .map((e) =>
-                            PosterMovie(name: e.title!, image: e.poster!))
-                        .toList() +
-                    [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: defaultMargin),
-                        child: Column(
-                          children: [
-                            Icon(
-                              MdiIcons.arrowRightCircleOutline,
-                              size: 60,
-                              color: mainColor,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: <Widget>[] +
+                movie
+                    .take(7)
+                    .map(
+                      (e) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoadingDetailPage(
+                                movie: e,
+                                genre: genre,
+                              ),
                             ),
-                            Text(
-                              "See More",
-                              style: heading1.copyWith(color: mainColor),
-                            ),
-                          ],
+                          );
+                        },
+                        child: PosterMovie(name: e.title!, image: e.poster!),
+                      ),
+                    )
+                    .toList() +
+                [
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: defaultMargin),
+                    child: Column(
+                      children: [
+                        Icon(
+                          MdiIcons.arrowRightCircleOutline,
+                          size: 60,
+                          color: mainColor,
                         ),
-                      )
-                    ],
-              ),
-            );
-          } else {
-            return Container(
-              child: Text("NTTTT"),
-            );
-          }
-        }),
+                        Text(
+                          "See More",
+                          style: heading1.copyWith(color: mainColor),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+          ),
+        )
       ],
     ),
   );
 }
 
-Widget carousel() {
-  return BlocBuilder<PlayingMovieCubit, PlayingMovieState>(
-    builder: (context, state) {
-      if (state is PlayingMovieLoaded) {
-        List<PlayingMovie> movie = state.playingMovie;
-
-        return CarouselSlider.builder(
-            itemCount: 5,
-            itemBuilder:
-                (BuildContext context, int itemIndex, int pageViewIndex) =>
-                    MovieCarousel(
-                      name: movie[itemIndex].title!,
-                      overview: movie[itemIndex].overview!,
-                      image: movie[itemIndex].image!,
-                    ),
-            options: CarouselOptions(
-              aspectRatio: 16 / 9,
-              viewportFraction: 0.8,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              scrollDirection: Axis.horizontal,
-            ));
-      } else {
-        return Text('NTTTTT');
-      }
-    },
-  );
+Widget carousel(context, List<Movie> movie, List<Genre> genre) {
+  return CarouselSlider.builder(
+      itemCount: 5,
+      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoadingDetailPage(
+                    movie: movie[itemIndex],
+                    genre: genre,
+                  ),
+                ),
+              );
+            },
+            child: MovieCarousel(
+              name: movie[itemIndex].title!,
+              overview: movie[itemIndex].overview!,
+              image: movie[itemIndex].image!,
+            ),
+          ),
+      options: CarouselOptions(
+        aspectRatio: 16 / 9,
+        viewportFraction: 0.8,
+        initialPage: 0,
+        enableInfiniteScroll: true,
+        reverse: false,
+        autoPlay: true,
+        autoPlayInterval: const Duration(seconds: 3),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        enlargeCenterPage: true,
+        enlargeFactor: 0.3,
+        scrollDirection: Axis.horizontal,
+      ));
 }
 
-Widget appbar() {
+Widget homepageAppbar() {
   return Container(
     margin: const EdgeInsets.only(top: 70, left: 18, right: 18),
     child: Row(

@@ -10,3 +10,5 @@ part 'cast.dart';
 part 'recommendation_movie.dart';
 part 'image_movie.dart';
 part 'detail_movie.dart';
+part 'review.dart';
+part 'video.dart';

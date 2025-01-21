@@ -8,6 +8,7 @@ class DetailPage extends StatefulWidget {
     required this.cast,
     required this.recommendationMovie,
     required this.imageMovie,
+    required this.detailMovie,
   });
 
   final Movie movie;
@@ -15,6 +16,7 @@ class DetailPage extends StatefulWidget {
   final List<Cast> cast;
   final List<RecommendationMovie> recommendationMovie;
   final List<ImageMovie> imageMovie;
+  final DetailMovie detailMovie;
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -63,7 +65,7 @@ class _DetailPageState extends State<DetailPage> {
                 const SizedBox(
                   height: 12,
                 ),
-                movieSection(widget.movie, genre),
+                movieSection(widget.movie, genre, widget.detailMovie, context),
                 const SizedBox(
                   height: 12,
                 ),
@@ -333,7 +335,7 @@ Widget movieInformation(Movie movie) {
   );
 }
 
-Widget movieSection(Movie movie, List genre) {
+Widget movieSection(Movie movie, List genre, DetailMovie detailMovie, context) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 18),
     child: Row(
@@ -373,6 +375,60 @@ Widget movieSection(Movie movie, List genre) {
                       ),
                     )
                     .toList(),
+              ),
+              Text(
+                "${detailMovie.runtime.toString()} min",
+                style: description.copyWith(color: mainColor),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoadingVideo(movie: movie),
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      backgroundColor: mainColor,
+                      shape: const RoundedRectangleBorder(),
+                    ),
+                    child: Text(
+                      "Trailer",
+                      style: description,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoadingReview(movie: movie),
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      backgroundColor: secondaryColor,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: greyColor, width: 1),
+                      ),
+                    ),
+                    child: Text(
+                      "Reviews",
+                      style: description,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

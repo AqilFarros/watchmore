@@ -133,4 +133,44 @@ class MovieService {
       return ApiReturnValue(value: image);
     }
   }
+
+  static Future<ApiReturnValue<List<Review>>> getReview(
+      {int? id, http.Client? client}) async {
+    client ??= http.Client();
+
+    String url = "$baseUrl/movie/$id/reviews?api_key=$apiKey";
+
+    var response = await client.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: "Failed To Get Review");
+    } else {
+      var data = jsonDecode(response.body);
+
+      List<Review> review =
+          (data['results'] as Iterable).map((e) => Review.fromJson(e)).toList();
+
+      return ApiReturnValue(value: review);
+    }
+  }
+
+  static Future<ApiReturnValue<List<Video>>> getVideo(
+      {int? id, http.Client? client}) async {
+        client ??= http.Client();
+
+    String url = "$baseUrl/movie/$id/videos?api_key=$apiKey";
+
+    var response = await client.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: "Failed To Get Video");
+    } else {
+      var data = jsonDecode(response.body);
+
+      List<Video> video =
+          (data['results'] as Iterable).map((e) => Video.fromJson(e)).toList();
+
+      return ApiReturnValue(value: video);
+    }
+      }
 }

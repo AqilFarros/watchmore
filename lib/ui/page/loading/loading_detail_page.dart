@@ -26,7 +26,10 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
   bool isDetailMovieLoaded = false;
 
   void _isCheckCondition() {
-    if (isCastLoaded && isRecommendationMovieLoaded && isImageMovieLoaded && isDetailMovieLoaded) {
+    if (isCastLoaded &&
+        isRecommendationMovieLoaded &&
+        isImageMovieLoaded &&
+        isDetailMovieLoaded) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -36,6 +39,7 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
             cast: cast,
             recommendationMovie: recommendationMovie,
             imageMovie: imageMovie,
+            detailMovie: detailMovie,
           ),
         ),
       );
@@ -79,7 +83,8 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
             }
           },
         ),
-        BlocListener<ImageMovieCubit, ImageMovieState>(listener: (context, state) {
+        BlocListener<ImageMovieCubit, ImageMovieState>(
+            listener: (context, state) {
           if (state is ImageMovieLoaded) {
             setState(() {
               imageMovie = state.image;
@@ -88,7 +93,8 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
             });
           }
         }),
-        BlocListener(listener: (context, state) {
+        BlocListener<DetailMovieCubit, DetailMovieState>(
+            listener: (context, state) {
           if (state is DetailMovieLoaded) {
             setState(() {
               detailMovie = state.detail;

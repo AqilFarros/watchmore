@@ -36,7 +36,7 @@ class ProductionCompany extends Equatable {
     this.image,
   });
 
-  factory ProductionCompany.fromJson(data) =>
+  factory ProductionCompany.fromJson(Map<String, dynamic> data) =>
       ProductionCompany(
         id: data['id'],
         name: data['name'],

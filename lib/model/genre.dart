@@ -6,7 +6,6 @@ class Genre extends Equatable {
 
   const Genre({required this.id, required this.name});
 
-
   factory Genre.fromJson(Map<String, dynamic> data) => Genre(
         id: data["id"],
         name: data['name'],

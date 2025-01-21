@@ -8,6 +8,8 @@ import 'package:watchmore/cubit/playing_movie_cubit.dart';
 import 'package:watchmore/cubit/popular_movie_cubit.dart';
 import 'package:watchmore/cubit/rated_movie_cubit.dart';
 import 'package:watchmore/cubit/recommendation_movie_cubit.dart';
+import 'package:watchmore/cubit/review_cubit.dart';
+import 'package:watchmore/cubit/video_cubit.dart';
 import 'package:watchmore/ui/page/page.dart';
 
 void main() {
@@ -30,6 +32,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => RecommendationMovieCubit()),
         BlocProvider(create: (context) => DetailMovieCubit()),
         BlocProvider(create: (context) => ImageMovieCubit()),
+        BlocProvider(create: (context) => ReviewCubit()),
+        BlocProvider(create: (context) => VideoCubit()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

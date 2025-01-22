@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:watchmore/cubit/cast_cubit.dart';
 import 'package:watchmore/cubit/detail_movie_cubit.dart';
 import 'package:watchmore/cubit/genre_cubit.dart';
@@ -12,7 +13,8 @@ import 'package:watchmore/cubit/review_cubit.dart';
 import 'package:watchmore/cubit/video_cubit.dart';
 import 'package:watchmore/ui/page/page.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 

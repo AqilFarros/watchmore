@@ -5,12 +5,9 @@ class MovieService {
       {int? page, http.Client? client}) async {
     client ??= http.Client();
 
-    String url = "$baseUrl/movie/popular?language=en-US&page=${page ?? 1}";
+    String url = "$baseUrl/movie/popular?language=en-US&page=${page ?? 1}&api_key=$apiKey";
 
-    var response = await client.get(Uri.parse(url), headers: {
-      "Authorization": "Bearer $token",
-      "Content-Type": "application/json",
-    });
+    var response = await client.get(Uri.parse(url));
 
     if (response.statusCode != 200) {
       return ApiReturnValue(

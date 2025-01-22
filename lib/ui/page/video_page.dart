@@ -11,15 +11,21 @@ class VideoPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-                reviewPageAppbar(name, context),
-                const SizedBox(
-                  height: 20,
-                ),
-              ] +
-              video.map((e) => VideoCard(video: e)).toList(),
-        ),
+        child: Column(children: [
+          videoPageAppbar(name, context),
+          const SizedBox(
+            height: 20,
+          ),
+          VideoCard(video: video[0]),
+        ]
+            // [
+            //       videoPageAppbar(name, context),
+            //       const SizedBox(
+            //         height: 20,
+            //       ),
+            //     ] +
+            //     video.map((e) => VideoCard(video: e)).toList(),
+            ),
       ),
     );
   }

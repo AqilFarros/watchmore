@@ -81,6 +81,10 @@ class _DetailPageState extends State<DetailPage> {
                 const SizedBox(
                   height: 12,
                 ),
+                productionCompany(widget.detailMovie.productionCompany!),
+                const SizedBox(
+                  height: 12,
+                ),
                 imageMovie(widget.imageMovie),
                 const SizedBox(
                   height: 12,
@@ -175,6 +179,38 @@ Widget imageMovie(List<ImageMovie> image) {
                 ),
               );
             }).toList(),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget productionCompany(List<ProductionCompany> company) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 18),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Production Company',
+          style: description.copyWith(color: greyColor),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: company
+                .take(10)
+                .map(
+                  (e) => CompanyProfile(
+                    company: e,
+                  ),
+                )
+                .toList(),
           ),
         ),
       ],

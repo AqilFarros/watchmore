@@ -33,6 +33,21 @@ class _VideoCardState extends State<VideoCard> {
   }
 }
 
+// Container(
+//       margin: const EdgeInsets.only(bottom: 18),
+//       child: YoutubePlayerBuilder(
+//           player: YoutubePlayer(
+//             controller: YoutubePlayerController(
+//               initialVideoId: widget.video.key!,
+//               flags: const YoutubePlayerFlags(
+//                 autoPlay: false,
+//                 mute: false,
+//               ),
+//             ),
+//           ),
+//           builder: (builder, player) => player),
+//     );
+
 // Widget o() {
 //   return Container(
 //     margin: const EdgeInsets.only(right: 18, left: 18, bottom: 18),

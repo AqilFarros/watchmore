@@ -14,3 +14,4 @@ part 'cast_profile.dart';
 part 'image_movie_card.dart';
 part 'review_card.dart';
 part 'video_card.dart';
+part 'company_profile.dart';

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 part 'movie.dart';
 part 'genre.dart';
 part 'cast.dart';
+part 'authenthication.dart';
 
 String baseUrl = "https://api.themoviedb.org/3";
 String apiKey = dotenv.env['API_KEY']!;

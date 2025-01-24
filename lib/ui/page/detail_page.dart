@@ -142,7 +142,7 @@ Widget recommendationMovie(
                   child: RateMovie(
                     title: e.title!,
                     number: i,
-                    image: e.image!,
+                    image: e.image,
                   ),
                 ),
               );

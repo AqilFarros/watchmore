@@ -12,3 +12,5 @@ part 'image_movie.dart';
 part 'detail_movie.dart';
 part 'review.dart';
 part 'video.dart';
+part 'user.dart';
+part 'token.dart';

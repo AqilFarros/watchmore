@@ -10,6 +10,7 @@ import 'package:watchmore/cubit/popular_movie_cubit.dart';
 import 'package:watchmore/cubit/rated_movie_cubit.dart';
 import 'package:watchmore/cubit/recommendation_movie_cubit.dart';
 import 'package:watchmore/cubit/review_cubit.dart';
+import 'package:watchmore/cubit/user_cubit.dart';
 import 'package:watchmore/cubit/video_cubit.dart';
 import 'package:watchmore/ui/page/page.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => UserCubit()),
         BlocProvider(create: (context) => PopularMovieCubit()),
         BlocProvider(create: (context) => PlayingMovieCubit()),
         BlocProvider(create: (context) => RatedMovieCubit()),
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoadingHomePage(),
+        home: WelcomePage(),
       ),
     );
   }

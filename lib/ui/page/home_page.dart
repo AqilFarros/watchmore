@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget rateMovie(context, List<Movie> movie, List<Genre> genre) {
+Widget rateMovie(BuildContext context, List<Movie> movie, List<Genre> genre) {
   int number = -1;
   List listMovie = [];
 

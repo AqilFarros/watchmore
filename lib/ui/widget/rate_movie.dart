@@ -5,12 +5,12 @@ class RateMovie extends StatelessWidget {
     super.key,
     required this.title,
     required this.number,
-    required this.image,
+    this.image,
   });
 
   final String title;
   final int number;
-  final String image;
+  final String? image;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,10 @@ class RateMovie extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: blackColor,
                 image: DecorationImage(
-                  image: NetworkImage("https://image.tmdb.org/t/p/original/$image"),
+                  image: image != null
+                ? NetworkImage("https://image.tmdb.org/t/p/original/$image")
+                : NetworkImage(
+                    "https://ui-avatars.com/api/?background=random&name=$title"),
                   fit: BoxFit.cover,
                   opacity: 0.7,
                 ),

@@ -1,7 +1,14 @@
 part of 'page.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +48,7 @@ class WelcomePage extends StatelessWidget {
                   topRight: Radius.circular(defaultMargin * 2),
                 ),
                 border: Border(
-                  top: BorderSide(
-                      color: mainColor.withOpacity(0.75), width: 1),
+                  top: BorderSide(color: mainColor.withOpacity(0.75), width: 1),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -120,32 +126,68 @@ class WelcomePage extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      backgroundColor: secondaryColor,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: greyColor),
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          MdiIcons.account,
-                          color: whiteColor,
-                          size: defaultMargin * 2,
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          "Guest",
-                          style: heading1,
-                        ),
-                      ],
-                    ),
+                  BlocConsumer<UserCubit, UserState>(
+                    listener: (context, state) {
+                      if (state is UserLoaded) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoadingHomePage(),
+                          ),
+                        );
+                      } else if (state is UserLoadingFailed) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.message),
+                            behavior: SnackBarBehavior.floating,
+                            showCloseIcon: true,
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return isLoading
+                          ? CircularProgressIndicator(
+                              color: mainColor,
+                            )
+                          : TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                context.read<UserCubit>().guest();
+
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: secondaryColor,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: greyColor),
+                                  borderRadius: BorderRadius.circular(28),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    MdiIcons.account,
+                                    color: whiteColor,
+                                    size: defaultMargin * 2,
+                                  ),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Text(
+                                    "Guest",
+                                    style: heading1,
+                                  ),
+                                ],
+                              ),
+                            );
+                    },
                   ),
                 ],
               ),

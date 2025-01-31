@@ -14,3 +14,5 @@ part 'review.dart';
 part 'video.dart';
 part 'user.dart';
 part 'token.dart';
+part 'favorite_movie.dart';
+part 'watchlist.dart';

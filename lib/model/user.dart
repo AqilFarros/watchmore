@@ -1,16 +1,19 @@
 part of 'model.dart';
 
 class User extends Equatable {
-  final String username;
+  final int? id;
+  final String? username;
   static String? sessionId;
 
   const User({
-    required this.username,
+    this.id,
+    this.username,
   });
 
-  factory User.fromJson(Map<String, dynamic> json,String username) => User(
-    username: username,
-  );
+  factory User.fromJson(Map<String, dynamic> data) => User(
+id: data['id'],
+        username: data["username"],
+      );
 
   @override
   List<Object?> get props => [

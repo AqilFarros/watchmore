@@ -5,7 +5,8 @@ class MovieService {
       {int? page, http.Client? client}) async {
     client ??= http.Client();
 
-    String url = "$baseUrl/movie/popular?language=en-US&page=${page ?? 1}&api_key=$apiKey";
+    String url =
+        "$baseUrl/movie/popular?language=en-US&page=${page ?? 1}&api_key=$apiKey";
 
     var response = await client.get(Uri.parse(url));
 
@@ -153,7 +154,7 @@ class MovieService {
 
   static Future<ApiReturnValue<List<Video>>> getVideo(
       {int? id, http.Client? client}) async {
-        client ??= http.Client();
+    client ??= http.Client();
 
     String url = "$baseUrl/movie/$id/videos?api_key=$apiKey";
 
@@ -169,5 +170,45 @@ class MovieService {
 
       return ApiReturnValue(value: video);
     }
-      }
+  }
+
+  static Future<ApiReturnValue<List<FavoriteMovie>>> getFavoriteMovie(
+      {http.Client? client, required String sessionId}) async {
+    client ??= http.Client();
+
+    String url =
+        "$baseUrl/account/null/favorite/movies?sort_by=created_at.asc&api_key=$apiKey&session_id=$sessionId";
+
+    var response = await client.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: "Failed To Get Favorite Movie");
+    } else {
+      var data = jsonDecode(response.body);
+
+      List<FavoriteMovie> movie = (data['results'] as Iterable).map((e) => FavoriteMovie.fromJson(e)).toList();
+
+      return ApiReturnValue(value: movie);
+    }
+  }
+
+  static Future<ApiReturnValue<List<Watchlist>>> getWatchlist(
+      {http.Client? client, required String sessionId}) async {
+    client ??= http.Client();
+
+    String url =
+        "$baseUrl/account/null/watchlist/movies?sort_by=created_at.asc&api_key=$apiKey&session_id=$sessionId";
+
+    var response = await client.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: "Failed To Get Watchlist Movie");
+    } else {
+      var data = jsonDecode(response.body);
+
+      List<Watchlist> movie = (data['results'] as Iterable).map((e) => Watchlist.fromJson(e)).toList();
+
+      return ApiReturnValue(value: movie);
+    }
+  }
 }

@@ -21,39 +21,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: blackColor,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 300,
-              decoration: BoxDecoration(
-                gradient: gradientColor,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                homepageAppbar(),
-                const SizedBox(
-                  height: 12,
-                ),
-                carousel(context, widget.playingMovie, widget.genre),
-                const SizedBox(
-                  height: 12,
-                ),
-                popularMovie(context, widget.popularMovie, widget.genre),
-                const SizedBox(
-                  height: 12,
-                ),
-                rateMovie(context, widget.rateMovie, widget.genre),
-              ],
-            ),
-          ],
+    return GeneralPage(
+      widgetChild: [
+        carousel(context, widget.playingMovie, widget.genre),
+        const SizedBox(
+          height: 12,
         ),
-      ),
+        popularMovie(context, widget.popularMovie, widget.genre),
+        const SizedBox(
+          height: 12,
+        ),
+        rateMovie(context, widget.rateMovie, widget.genre),
+      ],
     );
   }
 }
@@ -254,55 +233,4 @@ Widget carousel(context, List<Movie> movie, List<Genre> genre) {
         enlargeFactor: 0.3,
         scrollDirection: Axis.horizontal,
       ));
-}
-
-Widget homepageAppbar() {
-  return Container(
-    margin: const EdgeInsets.only(top: 70, left: 18, right: 18),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(
-          MdiIcons.sortVariant,
-          size: 35,
-          color: whiteColor,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          'WCM',
-          style: wcm,
-        ),
-        const Spacer(),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: mainColor.withOpacity(0.3),
-          ),
-          child: Icon(
-            MdiIcons.bellOutline,
-            color: whiteColor,
-            size: 25,
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: mainColor.withOpacity(0.3),
-          ),
-          child: Icon(
-            MdiIcons.dotsVertical,
-            color: whiteColor,
-            size: 25,
-          ),
-        ),
-      ],
-    ),
-  );
 }

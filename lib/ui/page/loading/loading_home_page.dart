@@ -26,6 +26,7 @@ class _LoadingHomePageState extends State<LoadingHomePage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
+          settings: RouteSettings(name: "LoadingHomePage"),
           builder: (context) => HomePage(
             genre: _genreMap,
             popularMovie: _popularMovie,

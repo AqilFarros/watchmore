@@ -20,7 +20,7 @@ class AuthenthicationService {
     }
   }
 
-  static Future<ApiReturnValue<User>> login(
+  static Future<ApiReturnValue<String>> login(
       String username, String password, Token token,
       {http.Client? client}) async {
     client ??= http.Client();
@@ -47,13 +47,67 @@ class AuthenthicationService {
       } else {
         var data = jsonDecode(response.body);
 
-        User user = User.fromJson(data, username);
-        User.sessionId = data["session_id"];
-
-        return ApiReturnValue(value: user);
+        return ApiReturnValue(value: data['session_id']);
       }
     }
   }
 
-  // static Future<ApiReturnValue<bool>> logOut({}) async {}
+  static Future<ApiReturnValue<bool>> logout({http.Client? client}) async {
+    client ??= http.Client();
+
+    String url = "$baseUrl/authentication/session";
+
+    var response =
+        await client.delete(Uri.parse("$url?session_id=${User.sessionId}"));
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(
+          message: "Oops, there is something wrong, please try again later.");
+    } else {
+      User.sessionId = null;
+
+      return ApiReturnValue(value: true);
+    }
+  }
+
+  static Future<ApiReturnValue<User>> getUser(
+      {http.Client? client, required String sessionId}) async {
+    client ??= http.Client();
+
+    String url = "$baseUrl/account/null?api_key=$apiKey&session_id=$sessionId";
+
+    var response = await client.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(
+          message: "Oops, there is something wrong, please try again later.");
+    } else {
+      var data = jsonDecode(response.body);
+
+      User user = User.fromJson(data);
+      User.sessionId = sessionId;
+
+      return ApiReturnValue(value: user);
+    }
+  }
+
+  static Future<ApiReturnValue<User>> getGuest({http.Client? client}) async {
+    client ??= http.Client();
+
+    String url = "$baseUrl/authentication/guest_session/new?api_key=$apiKey";
+
+    var response = await client.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(
+          message: "Oops, there is something wrong, please try again later.");
+    } else {
+      var data = jsonDecode(response.body);
+
+      User user = const User(id: null, username: "guest");
+      User.sessionId = data["guest_session_id"];
+
+      return ApiReturnValue(value: user);
+    }
+  }
 }

@@ -11,6 +11,7 @@ class VideoCubit extends Cubit<VideoState> {
   Future<void> getVideo(int id) async {
     ApiReturnValue<List<Video>> getVideo = await MovieService.getVideo(id: id);
 
+    emit(VideoInitial());
     if (getVideo.value != null) {
       emit(VideoLoaded(getVideo.value!));
     } else {

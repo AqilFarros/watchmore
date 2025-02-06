@@ -125,7 +125,8 @@ Widget rateMovie(BuildContext context, List<Movie> movie, List<Genre> genre) {
   );
 }
 
-Widget popularMovie(context, List<Movie> movie, List<Genre> genre) {
+Widget popularMovie(
+    BuildContext context, List<Movie> movie, List<Genre> genre) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 18),
     child: Column(
@@ -157,6 +158,8 @@ Widget popularMovie(context, List<Movie> movie, List<Genre> genre) {
                     .map(
                       (e) => GestureDetector(
                         onTap: () {
+                          context
+                              .read<DetailMovieCubit>();
                           Navigator.push(
                             context,
                             MaterialPageRoute(

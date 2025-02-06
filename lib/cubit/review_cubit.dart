@@ -11,6 +11,7 @@ class ReviewCubit extends Cubit<ReviewState> {
   Future<void> getReview(int id) async {
     ApiReturnValue<List<Review>> result = await MovieService.getReview(id: id);
 
+    emit(ReviewInitial());
     if (result.value != null) {
       emit(ReviewLoaded(result.value!));
     } else {

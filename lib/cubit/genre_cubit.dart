@@ -11,6 +11,7 @@ class GenreCubit extends Cubit<GenreState> {
   Future<void> getGenre() async {
     ApiReturnValue<List<Genre>> result = await GenreService.getGenre();
 
+    emit(GenreInitial());
     if (result.value != null) {
       emit(GenreLoaded(result.value!));
     } else {

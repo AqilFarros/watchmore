@@ -12,6 +12,7 @@ class ImageMovieCubit extends Cubit<ImageMovieState> {
     ApiReturnValue<List<ImageMovie>> result =
         await MovieService.getImageMovie(id: id);
 
+    emit(ImageMovieInitial());
     if (result.value != null) {
       emit(ImageMovieLoaded(result.value!));
     } else {

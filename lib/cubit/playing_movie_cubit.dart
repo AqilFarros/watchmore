@@ -12,6 +12,7 @@ class PlayingMovieCubit extends Cubit<PlayingMovieState> {
     ApiReturnValue<List<PlayingMovie>> result =
         await MovieService.getPlayingMovie(page: 1);
 
+    emit(PlayingMovieInitial());
     if (result.value != null) {
       emit(PlayingMovieLoaded(result.value!));
     } else {

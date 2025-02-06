@@ -9,8 +9,10 @@ class DetailMovieCubit extends Cubit<DetailMovieState> {
   DetailMovieCubit() : super(DetailMovieInitial());
 
   Future<void> getDetailMovie(int id) async {
-    ApiReturnValue<DetailMovie> result = await MovieService.getDetailMovie(id: id);
+    ApiReturnValue<DetailMovie> result =
+        await MovieService.getDetailMovie(id: id);
 
+    emit(DetailMovieInitial());
     if (result.value != null) {
       emit(DetailMovieLoaded(result.value!));
     } else {

@@ -12,6 +12,7 @@ class RatedMovieCubit extends Cubit<RatedMovieState> {
     ApiReturnValue<List<MostRatedMovie>> result =
         await MovieService.getMostRatedMovie(page: 1);
 
+    emit(RatedMovieInitial());
     if (result.value != null) {
       emit(RatedMovieLoaded(result.value!));
     } else {

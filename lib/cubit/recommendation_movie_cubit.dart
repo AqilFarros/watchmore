@@ -9,8 +9,10 @@ class RecommendationMovieCubit extends Cubit<RecommendationMovieState> {
   RecommendationMovieCubit() : super(RecommendationMovieInitial());
 
   Future<void> getRecommendationMovie(int id) async {
-    ApiReturnValue<List<RecommendationMovie>> result = await MovieService.getRecommendationMovie(id: id);
+    ApiReturnValue<List<RecommendationMovie>> result =
+        await MovieService.getRecommendationMovie(id: id);
 
+    emit(RecommendationMovieInitial());
     if (result.value != null) {
       emit(RecommendationMovieLoaded(result.value!));
     } else {

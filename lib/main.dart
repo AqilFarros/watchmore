@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:watchmore/cubit/cast_cubit.dart';
 import 'package:watchmore/cubit/detail_movie_cubit.dart';
+import 'package:watchmore/cubit/favorite_movie_cubit.dart';
 import 'package:watchmore/cubit/genre_cubit.dart';
 import 'package:watchmore/cubit/image_movie_cubit.dart';
 import 'package:watchmore/cubit/playing_movie_cubit.dart';
@@ -12,6 +13,7 @@ import 'package:watchmore/cubit/recommendation_movie_cubit.dart';
 import 'package:watchmore/cubit/review_cubit.dart';
 import 'package:watchmore/cubit/user_cubit.dart';
 import 'package:watchmore/cubit/video_cubit.dart';
+import 'package:watchmore/cubit/watchlist_cubit.dart';
 import 'package:watchmore/ui/page/page.dart';
 
 void main() async {
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ImageMovieCubit()),
         BlocProvider(create: (context) => ReviewCubit()),
         BlocProvider(create: (context) => VideoCubit()),
+        BlocProvider(create: (context) => FavoriteMovieCubit()),
+        BlocProvider(create: (context) => WacthlistCubit()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

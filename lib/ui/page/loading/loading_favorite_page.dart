@@ -39,7 +39,7 @@ class _LoadingFavoritePageState extends State<LoadingFavoritePage> {
           setState(() {
             _favoriteMovie = state.movie;
             isFavoriteMovieLoaded = true;
-            _checkCondition();  
+            _checkCondition();
           });
         }
       },

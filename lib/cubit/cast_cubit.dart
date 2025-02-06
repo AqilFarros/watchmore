@@ -11,6 +11,7 @@ class CastCubit extends Cubit<CastState> {
   Future<void> getCast(int id) async {
     ApiReturnValue<List<Cast>> result = await CastService.getCast(id: id);
 
+    emit(CastInitial());
     if (result.value != null) {
       emit(CastLoaded(result.value!));
     } else {

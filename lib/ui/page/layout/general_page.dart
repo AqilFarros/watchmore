@@ -44,8 +44,7 @@ Widget drawer(BuildContext context) {
     BuildContext context,
   ) {
     bool isActive =
-        ModalRoute.of(context)?.settings.name ==
-            page.runtimeType.toString();
+        ModalRoute.of(context)?.settings.name == page.runtimeType.toString();
 
     print(ModalRoute.of(context)?.settings.name);
 
@@ -104,13 +103,17 @@ Widget drawer(BuildContext context) {
                 const LoadingHomePage(),
                 context,
               ),
-              ListTile(
-                leading: Icon(MdiIcons.heart, color: whiteColor),
-                title: Text('Favorite', style: description),
+              drawerItem(
+                MdiIcons.heart,
+                "Favorite",
+                const LoadingFavoritePage(),
+                context,
               ),
-              ListTile(
-                leading: Icon(MdiIcons.listBox, color: whiteColor),
-                title: Text("Watchlist", style: description),
+              drawerItem(
+                MdiIcons.listBox,
+                "Watchlist",
+                const LoadingWatchlistPage(),
+                context,
               ),
             ],
           ),
@@ -119,7 +122,7 @@ Widget drawer(BuildContext context) {
         // Logout Button at Bottom
         Column(
           children: [
-            Divider(),
+            const Divider(),
             ListTile(
               leading: Icon(MdiIcons.logout, color: whiteColor),
               title: Text("Logout", style: description),

@@ -6,12 +6,13 @@ import 'package:watchmore/service/service.dart';
 part 'watchlist_state.dart';
 
 class WacthlistCubit extends Cubit<WacthlistState> {
-  WacthlistCubit() : super(WacthlistInitial());
+  WacthlistCubit() : super(const WacthlistInitial());
 
   Future<void> getWatchlist(String sessionId) async {
     ApiReturnValue<List<Watchlist>> result =
         await MovieService.getWatchlist(sessionId: sessionId);
 
+    emit(const WacthlistInitial());
     if (result.value != null) {
       emit(WacthlistLoaded(result.value!));
     } else {

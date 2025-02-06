@@ -12,6 +12,7 @@ class PopularMovieCubit extends Cubit<PopularMovieState> {
     ApiReturnValue<List<PopularMovie>> result =
         await MovieService.getPopularMovie(page: 1);
 
+    emit(PopularMovieInitial());
     if (result.value != null) {
       emit(PopularMovieLoaded(result.value!));
     } else {

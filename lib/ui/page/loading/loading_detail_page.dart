@@ -15,11 +15,15 @@ class LoadingDetailPage extends StatefulWidget {
 }
 
 class _LoadingDetailPageState extends State<LoadingDetailPage> {
+  List<FavoriteMovie> favoriteMovie = [];
+  List<Watchlist> watchlist = [];
   List<Cast> cast = [];
   List<RecommendationMovie> recommendationMovie = [];
   List<ImageMovie> imageMovie = [];
   DetailMovie detailMovie = const DetailMovie();
 
+  bool isFavoriteMovieLoaded = false;
+  bool isWatchlistLoaded = false;
   bool isCastLoaded = false;
   bool isRecommendationMovieLoaded = false;
   bool isImageMovieLoaded = false;
@@ -29,12 +33,16 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
     if (isCastLoaded &&
         isRecommendationMovieLoaded &&
         isImageMovieLoaded &&
-        isDetailMovieLoaded) {
+        isDetailMovieLoaded &&
+        isFavoriteMovieLoaded &&
+        isWatchlistLoaded) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => DetailPage(
             movie: widget.movie,
+            favoriteMovie: favoriteMovie,
+            watchlist: watchlist,
             genre: widget.genre,
             cast: cast,
             recommendationMovie: recommendationMovie,
@@ -48,6 +56,8 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
 
   @override
   void initState() {
+    context.read<FavoriteMovieCubit>().getFavoriteMovie(User.sessionId!);
+    context.read<WacthlistCubit>().getWatchlist(User.sessionId!);
     context.read<CastCubit>().getCast(widget.movie.id!);
     context
         .read<RecommendationMovieCubit>()
@@ -61,6 +71,28 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<FavoriteMovieCubit, FavoriteMovieState>(
+          listener: (context, state) {
+            if (state is FavoriteMovieLoaded) {
+              setState(() {
+                favoriteMovie = state.movie;
+                isFavoriteMovieLoaded = true;
+                _isCheckCondition();
+              });
+            }
+          },
+        ),
+        BlocListener<WacthlistCubit, WacthlistState>(
+          listener: (context, state) {
+            if (state is WacthlistLoaded) {
+              setState(() {
+                watchlist = state.movie;
+                isWatchlistLoaded = true;
+                _isCheckCondition();
+              });
+            }
+          },
+        ),
         BlocListener<CastCubit, CastState>(
           listener: (context, state) {
             if (state is CastLoaded) {

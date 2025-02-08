@@ -19,4 +19,37 @@ class WacthlistCubit extends Cubit<WacthlistState> {
       emit(WatchlistLoadedFailed(result.message!));
     }
   }
+
+  Future<void> addWatchlist(
+      {required String sessionId, required Watchlist movie}) async {
+    ApiReturnValue<Watchlist> result =
+        await MovieService.addWatchlistMovie(sessionId: sessionId, movie: movie);
+
+    emit(const WacthlistInitial());
+    if (result.value != null) {
+      emit(WacthlistLoaded(
+          (state as WacthlistLoaded).movie + [result.value!]));
+    } else {
+      emit(WatchlistLoadedFailed(result.message!));
+    }
+  }
+
+  Future<void> deleteWatchlistMovie(
+      {required String sessionId, required Watchlist movie}) async {
+    ApiReturnValue<Watchlist> result =
+        await MovieService.deleteWatchlistMovie(
+            sessionId: sessionId, movie: movie);
+
+    emit(const WacthlistInitial());
+    if (result.value != null) {
+      final currentMovies = (state as WacthlistLoaded).movie;
+
+      final updatedMovies =
+          currentMovies.where((m) => m.id != result.value!.id).toList();
+
+      emit(WacthlistLoaded(updatedMovies));
+    } else {
+      emit(WatchlistLoadedFailed(result.message!));
+    }
+  }
 }

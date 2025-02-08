@@ -186,7 +186,9 @@ class MovieService {
     } else {
       var data = jsonDecode(response.body);
 
-      List<FavoriteMovie> movie = (data['results'] as Iterable).map((e) => FavoriteMovie.fromJson(e)).toList();
+      List<FavoriteMovie> movie = (data['results'] as Iterable)
+          .map((e) => FavoriteMovie.fromJson(e))
+          .toList();
 
       return ApiReturnValue(value: movie);
     }
@@ -206,8 +208,86 @@ class MovieService {
     } else {
       var data = jsonDecode(response.body);
 
-      List<Watchlist> movie = (data['results'] as Iterable).map((e) => Watchlist.fromJson(e)).toList();
+      List<Watchlist> movie = (data['results'] as Iterable)
+          .map((e) => Watchlist.fromJson(e))
+          .toList();
 
+      return ApiReturnValue(value: movie);
+    }
+  }
+
+  static Future<ApiReturnValue<FavoriteMovie>> addFavoriteMovie(
+      {http.Client? client,
+      required String sessionId,
+      required FavoriteMovie movie}) async {
+    client ??= http.Client();
+
+    String url =
+        "$baseUrl/account/null/favorite?api_key=$apiKey&session_id=$sessionId";
+
+    var response = await http
+        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&favorite=true"));
+
+    if (response.statusCode != 201) {
+      return ApiReturnValue(message: "Failed To Add Favorite Movie");
+    } else {
+      return ApiReturnValue(value: movie);
+    }
+  }
+
+  static Future<ApiReturnValue<Watchlist>> addWatchlistMovie(
+      {http.Client? client,
+      required String sessionId,
+      required Watchlist movie}) async {
+    client ??= http.Client();
+
+    String url =
+        "$baseUrl/account/null/watchlist?api_key=$apiKey&session_id=$sessionId";
+
+    var response = await http
+        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&watchlist=true"));
+
+    if (response.statusCode != 201) {
+      return ApiReturnValue(message: "Failed To Add Watchlist");
+    } else {
+      return ApiReturnValue(value: movie);
+    }
+  }
+
+  static Future<ApiReturnValue<FavoriteMovie>> deleteFavoriteMovie(
+      {http.Client? client,
+      required String sessionId,
+      required FavoriteMovie movie}) async {
+    client ??= http.Client();
+
+    String url =
+        "$baseUrl/account/null/favorite?api_key=$apiKey&session_id=$sessionId";
+
+    var response = await http
+        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&favorite=false"));
+
+    if (response.statusCode != 201) {
+      return ApiReturnValue(message: "Failed To Delete Favorite Movie");
+    } else {
+      return ApiReturnValue(value: movie);
+    }
+  }
+
+  static Future<ApiReturnValue<Watchlist>> deleteWatchlistMovie(
+      {http.Client? client,
+      required String sessionId,
+      required Watchlist movie}) async {
+    client ??= http.Client();
+
+    String url =
+        "$baseUrl/account/null/watchlist?api_key=$apiKey&session_id=$sessionId";
+
+    var response = await http
+        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&watchlist=false"));
+
+    if (response.statusCode != 201) {
+      return ApiReturnValue(message: "Failed To Delete Watchlist");
+    } else {
       return ApiReturnValue(value: movie);
     }
   }

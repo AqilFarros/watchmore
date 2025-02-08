@@ -16,3 +16,5 @@ part 'user.dart';
 part 'token.dart';
 part 'favorite_movie.dart';
 part 'watchlist.dart';
+part 'favorite_data.dart';
+part 'watchlist_data.dart';

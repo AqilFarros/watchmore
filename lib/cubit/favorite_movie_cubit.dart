@@ -19,4 +19,37 @@ class FavoriteMovieCubit extends Cubit<FavoriteMovieState> {
       emit(FavoriteMovieLoadingFailed(result.message!));
     }
   }
+
+  Future<void> addFavoriteMovie(
+      {required String sessionId, required FavoriteMovie movie}) async {
+    ApiReturnValue<FavoriteMovie> result =
+        await MovieService.addFavoriteMovie(sessionId: sessionId, movie: movie);
+
+    emit(const FavoriteMovieInitial());
+    if (result.value != null) {
+      emit(FavoriteMovieLoaded(
+          (state as FavoriteMovieLoaded).movie + [result.value!]));
+    } else {
+      emit(FavoriteMovieLoadingFailed(result.message!));
+    }
+  }
+
+  Future<void> deleteFavoriteMovie(
+      {required String sessionId, required FavoriteMovie movie}) async {
+    ApiReturnValue<FavoriteMovie> result =
+        await MovieService.deleteFavoriteMovie(
+            sessionId: sessionId, movie: movie);
+
+    emit(const FavoriteMovieInitial());
+    if (result.value != null) {
+      final currentMovies = (state as FavoriteMovieLoaded).movie;
+
+      final updatedMovies =
+          currentMovies.where((m) => m.id != result.value!.id).toList();
+
+      emit(FavoriteMovieLoaded(updatedMovies));
+    } else {
+      emit(FavoriteMovieLoadingFailed(result.message!));
+    }
+  }
 }

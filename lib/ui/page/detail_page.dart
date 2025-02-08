@@ -5,6 +5,8 @@ class DetailPage extends StatefulWidget {
     super.key,
     required this.movie,
     required this.genre,
+    required this.favoriteMovie,
+    required this.watchlist,
     required this.cast,
     required this.recommendationMovie,
     required this.imageMovie,
@@ -13,6 +15,8 @@ class DetailPage extends StatefulWidget {
 
   final Movie movie;
   final List<Genre> genre;
+  final List<FavoriteMovie> favoriteMovie;
+  final List<Watchlist> watchlist;
   final List<Cast> cast;
   final List<RecommendationMovie> recommendationMovie;
   final List<ImageMovie> imageMovie;
@@ -24,9 +28,17 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   late List genre;
+  late bool isFavorite;
+  late bool isWatchlist;
+
+  bool isLoading = false;
+  bool containsId(List<Movie> array, int id) =>
+      array.any((item) => item.id == id);
 
   @override
   void initState() {
+    isFavorite = containsId(widget.favoriteMovie, widget.movie.id!);
+    isWatchlist = containsId(widget.watchlist, widget.movie.id!);
     genre =
         widget.genre.where((g) => widget.movie.genre!.contains(g.id)).toList();
     super.initState();
@@ -66,6 +78,79 @@ class _DetailPageState extends State<DetailPage> {
                   height: 12,
                 ),
                 movieSection(widget.movie, genre, widget.detailMovie, context),
+                const SizedBox(
+                  height: 12,
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          print(isFavorite);
+                          print(widget.favoriteMovie);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: secondaryColor,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: whiteColor),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Add to favorite ",
+                              style: description,
+                            ),
+                            isLoading
+                                ? CircularProgressIndicator(
+                                    color: whiteColor,
+                                  )
+                                : Icon(
+                                    isFavorite
+                                        ? MdiIcons.check
+                                        : MdiIcons.heart,
+                                    color: whiteColor,
+                                  ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          print(isWatchlist);
+                          print(widget.watchlist);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: mainColor,
+                          shape: const RoundedRectangleBorder(),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Add to watchlist ",
+                              style: description,
+                            ),
+                            isLoading
+                                ? CircularProgressIndicator(
+                                    color: whiteColor,
+                                  )
+                                : Icon(
+                                    isWatchlist
+                                        ? MdiIcons.check
+                                        : MdiIcons.listBox,
+                                    color: whiteColor,
+                                  ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 12,
                 ),

@@ -87,6 +87,13 @@ class _DetailPageState extends State<DetailPage> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          context.read<FavoriteMovieCubit>().addFavoriteMovie(sessionId: User.sessionId!, movie: FavoriteMovie(
+                            id: widget.movie.id
+                          ));
                           print(isFavorite);
                           print(widget.favoriteMovie);
                         },

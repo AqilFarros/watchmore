@@ -141,8 +141,28 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          print(isWatchlist);
-                          print(widget.watchlist);
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          if (isWatchlist == true) {
+                            context
+                                .read<WacthlistCubit>()
+                                .deleteWatchlistMovie(
+                                  sessionId: User.sessionId!,
+                                  movie: Watchlist.fromMovie(widget.movie),
+                                );
+                          } else {
+                            context.read<WacthlistCubit>().addWatchlist(
+                                  sessionId: User.sessionId!,
+                                  movie: Watchlist.fromMovie(widget.movie),
+                                );
+                          }
+
+                          setState(() {
+                            isWatchlist = !isWatchlist;
+                            isLoading = false;
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainColor,

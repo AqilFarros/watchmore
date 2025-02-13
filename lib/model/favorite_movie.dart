@@ -25,6 +25,18 @@ class FavoriteMovie extends Movie {
         genre: data['genre_ids'],
       );
 
+  factory FavoriteMovie.fromMovie(Movie movie) => FavoriteMovie(
+        id: movie.id,
+        title: movie.title,
+        overview: movie.overview,
+        poster: movie.poster,
+        image: movie.image,
+        language: movie.language,
+        rating: movie.rating,
+        release: movie.release,
+        genre: movie.genre,
+      );
+
   @override
   List<Object?> get props => [
         id,

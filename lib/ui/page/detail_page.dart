@@ -86,16 +86,29 @@ class _DetailPageState extends State<DetailPage> {
                   child: Column(
                     children: [
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             isLoading = true;
                           });
 
-                          context.read<FavoriteMovieCubit>().addFavoriteMovie(sessionId: User.sessionId!, movie: FavoriteMovie(
-                            id: widget.movie.id
-                          ));
-                          print(isFavorite);
-                          print(widget.favoriteMovie);
+                          if (isFavorite == true) {
+                            context
+                                .read<FavoriteMovieCubit>()
+                                .deleteFavoriteMovie(
+                                  sessionId: User.sessionId!,
+                                  movie: FavoriteMovie.fromMovie(widget.movie),
+                                );
+                          } else {
+                            context.read<FavoriteMovieCubit>().addFavoriteMovie(
+                                  sessionId: User.sessionId!,
+                                  movie: FavoriteMovie.fromMovie(widget.movie),
+                                );
+                          }
+
+                          setState(() {
+                            isFavorite = !isFavorite;
+                            isLoading = false;
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: secondaryColor,

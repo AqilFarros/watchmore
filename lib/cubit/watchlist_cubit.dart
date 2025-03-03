@@ -25,7 +25,6 @@ class WacthlistCubit extends Cubit<WacthlistState> {
     ApiReturnValue<Watchlist> result =
         await MovieService.addWatchlistMovie(sessionId: sessionId, movie: movie);
 
-    emit(const WacthlistInitial());
     if (result.value != null) {
       emit(WacthlistLoaded(
           (state as WacthlistLoaded).movie + [result.value!]));
@@ -40,7 +39,6 @@ class WacthlistCubit extends Cubit<WacthlistState> {
         await MovieService.deleteWatchlistMovie(
             sessionId: sessionId, movie: movie);
 
-    emit(const WacthlistInitial());
     if (result.value != null) {
       final currentMovies = (state as WacthlistLoaded).movie;
 

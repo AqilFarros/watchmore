@@ -25,7 +25,6 @@ class FavoriteMovieCubit extends Cubit<FavoriteMovieState> {
     ApiReturnValue<FavoriteMovie> result =
         await MovieService.addFavoriteMovie(sessionId: sessionId, movie: movie);
 
-    emit(const FavoriteMovieInitial());
     if (result.value != null) {
       emit(FavoriteMovieLoaded(
           (state as FavoriteMovieLoaded).movie + [result.value!]));
@@ -40,7 +39,6 @@ class FavoriteMovieCubit extends Cubit<FavoriteMovieState> {
         await MovieService.deleteFavoriteMovie(
             sessionId: sessionId, movie: movie);
 
-    emit(const FavoriteMovieInitial());
     if (result.value != null) {
       final currentMovies = (state as FavoriteMovieLoaded).movie;
 

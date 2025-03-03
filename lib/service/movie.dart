@@ -225,8 +225,8 @@ class MovieService {
     String url =
         "$baseUrl/account/null/favorite?api_key=$apiKey&session_id=$sessionId";
 
-    var response = await http
-        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&favorite=true"));
+    var response = await http.post(
+        Uri.parse("$url&media_type=movie&media_id=${movie.id}&favorite=true"));
 
     if (response.statusCode != 201) {
       return ApiReturnValue(message: "Failed To Add Favorite Movie");
@@ -244,8 +244,8 @@ class MovieService {
     String url =
         "$baseUrl/account/null/watchlist?api_key=$apiKey&session_id=$sessionId";
 
-    var response = await http
-        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&watchlist=true"));
+    var response = await http.post(
+        Uri.parse("$url&media_type=movie&media_id=${movie.id}&watchlist=true"));
 
     if (response.statusCode != 201) {
       return ApiReturnValue(message: "Failed To Add Watchlist");
@@ -263,10 +263,19 @@ class MovieService {
     String url =
         "$baseUrl/account/null/favorite?api_key=$apiKey&session_id=$sessionId";
 
-    var response = await http
-        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&favorite=false"));
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        "media_type": "movie",
+        "media_id": movie.id,
+        "favorite": false,
+      }),
+    );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       return ApiReturnValue(message: "Failed To Delete Favorite Movie");
     } else {
       return ApiReturnValue(value: movie);
@@ -282,10 +291,19 @@ class MovieService {
     String url =
         "$baseUrl/account/null/watchlist?api_key=$apiKey&session_id=$sessionId";
 
-    var response = await http
-        .post(Uri.parse("$url&media_type=movie&media_id=${movie.id}&watchlist=false"));
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        "media_type": "movie",
+        "media_id": movie.id,
+        "watchlist": false,
+      }),
+    );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       return ApiReturnValue(message: "Failed To Delete Watchlist");
     } else {
       return ApiReturnValue(value: movie);

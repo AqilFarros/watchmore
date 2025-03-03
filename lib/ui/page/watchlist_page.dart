@@ -12,7 +12,7 @@ class WatchlistPage extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 18),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 "My Watchlist",
@@ -24,7 +24,9 @@ class WatchlistPage extends StatelessWidget {
                 height: 12,
               ),
               Wrap(
+                alignment: WrapAlignment.center,
                 spacing: 12,
+                runSpacing: 12,
                 children: watchlist
                     .map(
                       (e) => GestureDetector(

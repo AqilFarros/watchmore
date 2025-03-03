@@ -56,8 +56,14 @@ class _LoadingDetailPageState extends State<LoadingDetailPage> {
 
   @override
   void initState() {
-    context.read<FavoriteMovieCubit>().getFavoriteMovie(User.sessionId!);
-    context.read<WacthlistCubit>().getWatchlist(User.sessionId!);
+    if ((context.read<UserCubit>().state as UserLoaded).user.id != null) {
+      context.read<FavoriteMovieCubit>().getFavoriteMovie(User.sessionId!);
+      context.read<WacthlistCubit>().getWatchlist(User.sessionId!);
+    } else {
+      isFavoriteMovieLoaded = true;
+      isWatchlistLoaded = true;
+      _isCheckCondition();
+    }
     context.read<CastCubit>().getCast(widget.movie.id!);
     context
         .read<RecommendationMovieCubit>()

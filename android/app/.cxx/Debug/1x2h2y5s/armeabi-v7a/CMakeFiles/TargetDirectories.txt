@@ -1,0 +1,2 @@
+D:/VS Code/mobile_project/tutor_flutter/watchmore/android/app/.cxx/Debug/1x2h2y5s/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/VS Code/mobile_project/tutor_flutter/watchmore/android/app/.cxx/Debug/1x2h2y5s/armeabi-v7a/CMakeFiles/rebuild_cache.dir

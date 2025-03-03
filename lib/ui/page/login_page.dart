@@ -148,30 +148,32 @@ class _LoginPageState extends State<LoginPage> {
                                   color: mainColor,
                                 )
                               : TextButton(
-                                  onPressed: () {
-                                    if (usernameController.text == '' ||
-                                        passwordController.text == '') {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Username and password are required.'),
-                                          behavior: SnackBarBehavior.floating,
-                                          showCloseIcon: true,
-                                        ),
-                                      );
-                                    } else {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
+                                  onPressed: () async {
+                                    if (isLoading == false) {
+                                      if (usernameController.text == '' ||
+                                          passwordController.text == '') {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Username and password are required.'),
+                                            behavior: SnackBarBehavior.floating,
+                                            showCloseIcon: true,
+                                          ),
+                                        );
+                                      } else {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
 
-                                      context.read<UserCubit>().login(
-                                          usernameController.text,
-                                          passwordController.text);
+                                        await context.read<UserCubit>().login(
+                                            usernameController.text,
+                                            passwordController.text);
 
-                                      setState(() {
-                                        isLoading = false;
-                                      });
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      }
                                     }
                                   },
                                   style: TextButton.styleFrom(

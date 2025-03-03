@@ -107,6 +107,8 @@ class AuthenthicationService {
       User user = const User(id: null, username: "guest");
       User.sessionId = data["guest_session_id"];
 
+      print(User.sessionId);
+
       return ApiReturnValue(value: user);
     }
   }

@@ -9,27 +9,28 @@ class GeneralPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       drawer: drawer(context),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 300,
-              decoration: BoxDecoration(
-                gradient: gradientColor,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                homepageAppbar(context),
-                const SizedBox(
-                  height: 12,
+      body: Expanded(
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 300,
+                decoration: BoxDecoration(
+                  gradient: gradientColor,
                 ),
-                ...widgetChild
-              ],
-            ),
-          ],
+              ),
+              Column(
+                children: <Widget>[
+                  homepageAppbar(context),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  ...widgetChild
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -177,35 +178,64 @@ Widget homepageAppbar(BuildContext context) {
         ),
         PopupMenuButton(
           itemBuilder: (BuildContext context) => [
-            PopupMenuItem(
-              child: InkWell(
-                onTap: () {
-                  context.read<UserCubit>().logout();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WelcomePage(),
+            (context.read<UserCubit>().state as UserLoaded).user.id == null
+                ? PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            MdiIcons.logout,
+                            color: whiteColor,
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            "Login",
+                            style: description,
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      MdiIcons.logout,
-                      color: whiteColor,
+                  )
+                : PopupMenuItem(
+                    child: InkWell(
+                      onTap: () async {
+                        await context.read<UserCubit>().logout();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const WelcomePage(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            MdiIcons.logout,
+                            color: whiteColor,
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            "Logout",
+                            style: description,
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      "Logout",
-                      style: description,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ],
           style: ButtonStyle(
             backgroundColor: WidgetStatePropertyAll(secondaryColor),

@@ -87,28 +87,33 @@ class _DetailPageState extends State<DetailPage> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
+                          if (isLoading == false) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            if (isFavorite == true) {
+                              await context
+                                  .read<FavoriteMovieCubit>()
+                                  .deleteFavoriteMovie(
+                                    sessionId: User.sessionId!,
+                                    movie:
+                                        FavoriteMovie.fromMovie(widget.movie),
+                                  );
+                            } else {
+                              await context
+                                  .read<FavoriteMovieCubit>()
+                                  .addFavoriteMovie(
+                                    sessionId: User.sessionId!,
+                                    movie:
+                                        FavoriteMovie.fromMovie(widget.movie),
+                                  );
+                            }
 
-                          if (isFavorite == true) {
-                            context
-                                .read<FavoriteMovieCubit>()
-                                .deleteFavoriteMovie(
-                                  sessionId: User.sessionId!,
-                                  movie: FavoriteMovie.fromMovie(widget.movie),
-                                );
-                          } else {
-                            context.read<FavoriteMovieCubit>().addFavoriteMovie(
-                                  sessionId: User.sessionId!,
-                                  movie: FavoriteMovie.fromMovie(widget.movie),
-                                );
+                            setState(() {
+                              isFavorite = !isFavorite;
+                              isLoading = false;
+                            });
                           }
-
-                          setState(() {
-                            isFavorite = !isFavorite;
-                            isLoading = false;
-                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: secondaryColor,
@@ -141,28 +146,30 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          setState(() {
-                            isLoading = true;
-                          });
+                          if (isLoading == false) {
+                            setState(() {
+                              isLoading = true;
+                            });
 
-                          if (isWatchlist == true) {
-                            context
-                                .read<WacthlistCubit>()
-                                .deleteWatchlistMovie(
-                                  sessionId: User.sessionId!,
-                                  movie: Watchlist.fromMovie(widget.movie),
-                                );
-                          } else {
-                            context.read<WacthlistCubit>().addWatchlist(
-                                  sessionId: User.sessionId!,
-                                  movie: Watchlist.fromMovie(widget.movie),
-                                );
+                            if (isWatchlist == true) {
+                              context
+                                  .read<WacthlistCubit>()
+                                  .deleteWatchlistMovie(
+                                    sessionId: User.sessionId!,
+                                    movie: Watchlist.fromMovie(widget.movie),
+                                  );
+                            } else {
+                              context.read<WacthlistCubit>().addWatchlist(
+                                    sessionId: User.sessionId!,
+                                    movie: Watchlist.fromMovie(widget.movie),
+                                  );
+                            }
+
+                            setState(() {
+                              isWatchlist = !isWatchlist;
+                              isLoading = false;
+                            });
                           }
-
-                          setState(() {
-                            isWatchlist = !isWatchlist;
-                            isLoading = false;
-                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainColor,

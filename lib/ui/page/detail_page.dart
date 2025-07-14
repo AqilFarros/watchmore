@@ -31,7 +31,8 @@ class _DetailPageState extends State<DetailPage> {
   late bool isFavorite;
   late bool isWatchlist;
 
-  bool isLoading = false;
+  bool isFavoriteLoading = false;
+  bool isWatchlistLoading = false;
   bool containsId(List<Movie> array, int id) =>
       array.any((item) => item.id == id);
 
@@ -81,123 +82,127 @@ class _DetailPageState extends State<DetailPage> {
                 const SizedBox(
                   height: 12,
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 18),
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (isLoading == false) {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            if (isFavorite == true) {
-                              await context
-                                  .read<FavoriteMovieCubit>()
-                                  .deleteFavoriteMovie(
-                                    sessionId: User.sessionId!,
-                                    movie:
-                                        FavoriteMovie.fromMovie(widget.movie),
-                                  );
-                            } else {
-                              await context
-                                  .read<FavoriteMovieCubit>()
-                                  .addFavoriteMovie(
-                                    sessionId: User.sessionId!,
-                                    movie:
-                                        FavoriteMovie.fromMovie(widget.movie),
-                                  );
-                            }
-
-                            setState(() {
-                              isFavorite = !isFavorite;
-                              isLoading = false;
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: secondaryColor,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: whiteColor),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                (context.read<UserCubit>().state as UserLoaded).user.id == null
+                    ? Container()
+                    : Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 18),
+                        child: Column(
                           children: [
-                            Text(
-                              "Add to favorite ",
-                              style: description,
-                            ),
-                            isLoading
-                                ? CircularProgressIndicator(
-                                    color: whiteColor,
-                                  )
-                                : Icon(
-                                    isFavorite
-                                        ? MdiIcons.check
-                                        : MdiIcons.heart,
-                                    color: whiteColor,
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (isFavoriteLoading == false) {
+                                  setState(() {
+                                    isFavoriteLoading = true;
+                                  });
+                                  if (isFavorite == true) {
+                                    await context
+                                        .read<FavoriteMovieCubit>()
+                                        .deleteFavoriteMovie(
+                                          sessionId: User.sessionId!,
+                                          movie: FavoriteMovie.fromMovie(
+                                              widget.movie),
+                                        );
+                                  } else {
+                                    await context
+                                        .read<FavoriteMovieCubit>()
+                                        .addFavoriteMovie(
+                                          sessionId: User.sessionId!,
+                                          movie: FavoriteMovie.fromMovie(
+                                              widget.movie),
+                                        );
+                                  }
+
+                                  setState(() {
+                                    isFavorite = !isFavorite;
+                                    isFavoriteLoading = false;
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: secondaryColor,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: whiteColor),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Add to favorite ",
+                                    style: description,
                                   ),
+                                  isFavoriteLoading
+                                      ? CircularProgressIndicator(
+                                          color: whiteColor,
+                                        )
+                                      : Icon(
+                                          isFavorite
+                                              ? MdiIcons.check
+                                              : MdiIcons.heart,
+                                          color: whiteColor,
+                                        ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (isWatchlistLoading == false) {
+                                  setState(() {
+                                    isWatchlistLoading = true;
+                                  });
+
+                                  if (isWatchlist == true) {
+                                    context
+                                        .read<WacthlistCubit>()
+                                        .deleteWatchlistMovie(
+                                          sessionId: User.sessionId!,
+                                          movie:
+                                              Watchlist.fromMovie(widget.movie),
+                                        );
+                                  } else {
+                                    context.read<WacthlistCubit>().addWatchlist(
+                                          sessionId: User.sessionId!,
+                                          movie:
+                                              Watchlist.fromMovie(widget.movie),
+                                        );
+                                  }
+
+                                  setState(() {
+                                    isWatchlist = !isWatchlist;
+                                    isWatchlistLoading = false;
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: mainColor,
+                                shape: const RoundedRectangleBorder(),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Add to watchlist ",
+                                    style: description,
+                                  ),
+                                  isWatchlistLoading
+                                      ? CircularProgressIndicator(
+                                          color: whiteColor,
+                                        )
+                                      : Icon(
+                                          isWatchlist
+                                              ? MdiIcons.check
+                                              : MdiIcons.listBox,
+                                          color: whiteColor,
+                                        ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (isLoading == false) {
-                            setState(() {
-                              isLoading = true;
-                            });
-
-                            if (isWatchlist == true) {
-                              context
-                                  .read<WacthlistCubit>()
-                                  .deleteWatchlistMovie(
-                                    sessionId: User.sessionId!,
-                                    movie: Watchlist.fromMovie(widget.movie),
-                                  );
-                            } else {
-                              context.read<WacthlistCubit>().addWatchlist(
-                                    sessionId: User.sessionId!,
-                                    movie: Watchlist.fromMovie(widget.movie),
-                                  );
-                            }
-
-                            setState(() {
-                              isWatchlist = !isWatchlist;
-                              isLoading = false;
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: mainColor,
-                          shape: const RoundedRectangleBorder(),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Add to watchlist ",
-                              style: description,
-                            ),
-                            isLoading
-                                ? CircularProgressIndicator(
-                                    color: whiteColor,
-                                  )
-                                : Icon(
-                                    isWatchlist
-                                        ? MdiIcons.check
-                                        : MdiIcons.listBox,
-                                    color: whiteColor,
-                                  ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(
                   height: 12,
                 ),

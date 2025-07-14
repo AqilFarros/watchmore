@@ -8,7 +8,6 @@ class LoadingWatchlistPage extends StatefulWidget {
 }
 
 class _LoadingWatchlistPageState extends State<LoadingWatchlistPage> {
-  List<Watchlist> _watchlistMovie = [];
   bool isWatchlistMovieLoaded = false;
 
   void _checkCondition() {
@@ -16,7 +15,7 @@ class _LoadingWatchlistPageState extends State<LoadingWatchlistPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => WatchlistPage(watchlist: _watchlistMovie),
+          builder: (context) => const WatchlistPage(),
           settings: const RouteSettings(name: "LoadingWatchlistPage"),
         ),  
       );
@@ -35,7 +34,6 @@ class _LoadingWatchlistPageState extends State<LoadingWatchlistPage> {
       listener: (context, state) {
         if (state is WacthlistLoaded) {
           setState(() {
-            _watchlistMovie = state.movie;
             isWatchlistMovieLoaded = true;
             _checkCondition();  
           });

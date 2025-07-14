@@ -8,11 +8,6 @@ class LoadingHomePage extends StatefulWidget {
 }
 
 class _LoadingHomePageState extends State<LoadingHomePage> {
-  List<Genre> _genreMap = [];
-  List<PopularMovie> _popularMovie = [];
-  List<PlayingMovie> _playingMovie = [];
-  List<MostRatedMovie> _ratedMovie = [];
-
   bool isGenreLoaded = false;
   bool isPlayingMovieLoaded = false;
   bool isPopularMovieLoaded = false;
@@ -27,12 +22,7 @@ class _LoadingHomePageState extends State<LoadingHomePage> {
         context,
         MaterialPageRoute(
           settings: const RouteSettings(name: "LoadingHomePage"),
-          builder: (context) => HomePage(
-            genre: _genreMap,
-            popularMovie: _popularMovie,
-            playingMovie: _playingMovie,
-            rateMovie: _ratedMovie,
-          ),
+          builder: (context) => const HomePage(),
         ),
       );
     }
@@ -55,7 +45,6 @@ class _LoadingHomePageState extends State<LoadingHomePage> {
           listener: (context, state) {
             if (state is GenreLoaded) {
               setState(() {
-                _genreMap = state.genre;
                 isGenreLoaded = true;
                 _checkCondition();
               });
@@ -66,7 +55,6 @@ class _LoadingHomePageState extends State<LoadingHomePage> {
           listener: (context, state) {
             if (state is PlayingMovieLoaded) {
               setState(() {
-                _playingMovie = state.playingMovie;
                 isPlayingMovieLoaded = true;
                 _checkCondition();
               });
@@ -77,7 +65,6 @@ class _LoadingHomePageState extends State<LoadingHomePage> {
           listener: (context, state) {
             if (state is PopularMovieLoaded) {
               setState(() {
-                _popularMovie = state.popularMovie;
                 isPopularMovieLoaded = true;
                 _checkCondition();
               });
@@ -88,7 +75,6 @@ class _LoadingHomePageState extends State<LoadingHomePage> {
           listener: (context, state) {
             if (state is RatedMovieLoaded) {
               setState(() {
-                _ratedMovie = state.rateMovie;
                 isRatedMovieLoaded = true;
                 _checkCondition();
               });

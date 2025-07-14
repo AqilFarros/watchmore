@@ -47,8 +47,6 @@ Widget drawer(BuildContext context) {
     bool isActive =
         ModalRoute.of(context)?.settings.name == page.runtimeType.toString();
 
-    print(ModalRoute.of(context)?.settings.name);
-
     return ListTile(
       leading: Icon(icon, color: isActive ? mainColor : whiteColor),
       title: Text(
@@ -141,7 +139,7 @@ Widget homepageAppbar(BuildContext context) {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Builder(builder: (context) {
+        context.read<UserCubit>().state is UserLoaded ? Builder(builder: (context) {
           return IconButton(
             onPressed: () {
               Scaffold.of(context).openDrawer();
@@ -152,9 +150,9 @@ Widget homepageAppbar(BuildContext context) {
               color: whiteColor,
             ),
           );
-        }),
-        const SizedBox(
-          width: 10,
+        }) : const SizedBox(),
+        SizedBox(
+          width: context.read<UserCubit>().state is UserLoaded ? 10 : 0 ,
         ),
         Text(
           'WCM',

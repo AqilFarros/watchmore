@@ -1,18 +1,7 @@
 part of "page.dart";
 
 class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key,
-    required this.popularMovie,
-    required this.playingMovie,
-    required this.rateMovie,
-    required this.genre,
-  });
-
-  final List<PopularMovie> popularMovie;
-  final List<PlayingMovie> playingMovie;
-  final List<MostRatedMovie> rateMovie;
-  final List<Genre> genre;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,17 +10,45 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    List<Genre> genres =
+        (context.read<GenreCubit>().state as GenreLoaded).genre;
+
     return GeneralPage(
       widgetChild: [
-        carousel(context, widget.playingMovie, widget.genre),
+        BlocBuilder<PlayingMovieCubit, PlayingMovieState>(
+          builder: (context, state) {
+            if (state is PlayingMovieLoaded) {
+              return carousel(context, state.playingMovie, genres);
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
         const SizedBox(
           height: 12,
         ),
-        popularMovie(context, widget.popularMovie, widget.genre),
+        BlocBuilder<PopularMovieCubit, PopularMovieState>(
+          builder: (context, state) {
+            if (state is PopularMovieLoaded) {
+              return popularMovie(context, state.popularMovie, genres);
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
         const SizedBox(
           height: 12,
         ),
-        rateMovie(context, widget.rateMovie, widget.genre),
+        BlocBuilder<RatedMovieCubit, RatedMovieState>(
+          builder: (context, state) {
+            if (state is RatedMovieLoaded) {
+              return rateMovie(context, state.rateMovie, genres);
+            }
+            else {
+              return const SizedBox();
+            }
+          },
+        ),
       ],
     );
   }
@@ -158,8 +175,7 @@ Widget popularMovie(
                     .map(
                       (e) => GestureDetector(
                         onTap: () {
-                          context
-                              .read<DetailMovieCubit>();
+                          context.read<DetailMovieCubit>();
                           Navigator.push(
                             context,
                             MaterialPageRoute(

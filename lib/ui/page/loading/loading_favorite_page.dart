@@ -8,7 +8,6 @@ class LoadingFavoritePage extends StatefulWidget {
 }
 
 class _LoadingFavoritePageState extends State<LoadingFavoritePage> {
-  List<FavoriteMovie> _favoriteMovie = [];
   bool isFavoriteMovieLoaded = false;
 
   void _checkCondition() {
@@ -16,9 +15,7 @@ class _LoadingFavoritePageState extends State<LoadingFavoritePage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => FavoritePage(
-            favoriteMovie: _favoriteMovie,
-          ),
+          builder: (context) => FavoritePage(),
           settings: const RouteSettings(name: "LoadingFavoritePage"),
         ),
       );
@@ -37,7 +34,6 @@ class _LoadingFavoritePageState extends State<LoadingFavoritePage> {
       listener: (context, state) {
         if (state is FavoriteMovieLoaded) {
           setState(() {
-            _favoriteMovie = state.movie;
             isFavoriteMovieLoaded = true;
             _checkCondition();
           });

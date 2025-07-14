@@ -1,9 +1,7 @@
 part of 'page.dart';
 
 class WatchlistPage extends StatelessWidget {
-  const WatchlistPage({super.key, required this.watchlist});
-
-  final List<Watchlist> watchlist;
+  const WatchlistPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,33 +21,41 @@ class WatchlistPage extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 12,
-                runSpacing: 12,
-                children: watchlist
-                    .map(
-                      (e) => GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoadingDetailPage(
-                                movie: e,
-                                genre: (context.read<GenreCubit>().state
-                                        as GenreLoaded)
-                                    .genre,
+              BlocBuilder<WacthlistCubit, WacthlistState>(
+                builder: (context, state) {
+                  if (state is WacthlistLoaded) {
+                    return Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: state.movie
+                          .map(
+                            (e) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoadingDetailPage(
+                                      movie: e,
+                                      genre: (context.read<GenreCubit>().state
+                                              as GenreLoaded)
+                                          .genre,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: PosterMovie(
+                                name: e.title!,
+                                image: e.poster!,
                               ),
                             ),
-                          );
-                        },
-                        child: PosterMovie(
-                          name: e.title!,
-                          image: e.poster!,
-                        ),
-                      ),
-                    )
-                    .toList(),
+                          )
+                          .toList(),
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
               ),
             ],
           ),
